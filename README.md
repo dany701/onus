@@ -151,10 +151,10 @@ fitness-agent/
 This project is built primarily in Python, with an emphasis on clean data modeling, reproducible evaluation, and a safe path from a rule-based policy to a learned policy.
 
 ## Core language
-  Python
+  - Python
   
 ## Logging
-  Python logging - used throughout the system, so every decision is traceable (error-based logging)
+  - Python logging - used throughout the system, so every decision is traceable (error-based logging)
   Supabase event records — used to store structured history (state snapshots, prescriptions, guardrail triggers, and outcomes)
   
 ## Data modeling
@@ -179,7 +179,6 @@ This project is built primarily in Python, with an emphasis on clean data modeli
 
 ## Testing
   - Pytest
-  - 
 ## Agents
   - Claude — used for:
       - generating clear natural-language explanations
