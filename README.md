@@ -146,7 +146,40 @@ fitness-agent/
 ├── evals/                # Test suite — 15 scenarios covering edge cases
 └── notebooks/            # Training runs, analysis, backtest results
 ```
+## Tech Stack
 
+This project is built primarily in Python, with an emphasis on clean data modeling, reproducible evaluation, and a safe path from a rule-based policy to a learned policy.
+
+Core language
+  Python
+Logging
+  Python logging - used throughout the system, so every decision is traceable (error-based logging)
+  Supabase event records — used to store structured history (state snapshots, prescriptions, guardrail triggers, and outcomes)
+Data modeling
+  Pydantic
+    - wearable signals
+    - training sessions
+    - computed athlete state
+    - prescriptions and explanations
+Database
+  Supabase
+    - daily wearable metrics (Whoop + Oura)
+    - training history and session logs
+    - computed state snapshots
+Numerical computing
+  - NumPy (rolling baselines, normalization, readiness scoring, trend features (fatigue + performance))
+Machine learning
+  - PyTorch (used to train the model once enough logged sessions exist)
+  - scikit-learn (Used for quick baselines, evaluation metrics, and early experiments before moving fully into PyTorch)
+Testing
+  - Pytest
+Agents
+  - Claude — used for:
+      - generating clear natural-language explanations
+      - summarizing trends over time
+      - self-reflection / improvement loops
+
+guardrail violations
 ---
 
 ## Current Status
