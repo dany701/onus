@@ -121,6 +121,33 @@ The policy starts as a simple rule-based system (high recovery → train hard, l
 
 ---
 
+## Glycogen Proxy Algorithm
+
+The system computes a glycogen status score from 0 (depleted) to 1 (fully loaded) using two different paths:
+
+**Path 1 (tracked data):** If you log carb intake, the system uses actual grams consumed in the last 24 hours relative to a personal threshold (calibrated to your bodyweight and training volume). Higher intake = higher glycogen status.
+
+**Path 2 (inferred from proxies):** If carbs aren't tracked, the system estimates depletion by accumulating evidence:
+
+- Recent training volume significantly above baseline adds depletion
+- Multiple consecutive hard training days adds depletion
+- Extended training block without a deload adds depletion
+- Sustained caloric deficit (especially over 300kcal) adds significant depletion
+
+The proxy approach starts at 100% assumed glycogen and subtracts based on how many depletion signals are present. Each signal contributes a fractional penalty.
+
+**Why this works for RL:**
+
+When you train the model on your tracked data, it sees both the direct carb numbers AND all the proxy features in the same trace. It learns: "when carbs are low, performance drops" but also "when carbs are low, these other patterns are usually present too."
+
+Later, when someone doesn't track carbs, the model sees missing carb data but recognizes the proxy pattern it learned from your traces. It's learned the shape of glycogen's effect and can apply it indirectly.
+
+**Integration into readiness:**
+
+Glycogen status gets a 10% weight in the overall readiness score calculation. Recovery signals get 30%, HRV gets 25%, sleep gets 20%, load management gets 15%, glycogen gets 10%. This makes it meaningful but not dominant — a fully depleted glycogen score (0) drops readiness by 10 points, which is enough to shift prescription from heavy to moderate but not enough to force rest on its own.
+
+---
+
 ## Project Structure
 
 ```
